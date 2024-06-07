@@ -15,11 +15,28 @@ async function connectToDatabase() {
 
     const client = new MongoClient(url);      
 
-    // Task 1: Connect to MongoDB
-    // {{insert code}}
+  const db = await connectToDatabase();
+///// tasks module 4
+  const collection = db.collection("users");
+  const existingEmail = await collection.findOne({ email: req.body.email });
+        const newUser = await collection.insertOne({
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            password: hash,
+            createdAt: new Date(),
+        });
+        const payload = {
+            user: {
+            id: newUser.insertedId,
+            },
+        };
 
+    const authtoken = jwt.sign(payload, JWT_SECRET);  
+////// End of tasks module 4
+    // Task 1: Connect to MongoDB
+ 
     // Task 2: Connect to database giftDB and store in variable dbInstance
-    //{{insert code}}
 
     // Task 3: Return database instance
     // {{insert code}}
